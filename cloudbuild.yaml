@@ -1,0 +1,16 @@
+steps:
+
+# Build the container image
+- name: gcr.io/cloud-builders/docker
+  args: ['build', '-t', 'asia-southeast2-docker.pkg.dev/dev-fahmirullah-abdillah/belajar-cicd/static:latest', '.']
+  id: building the container image
+
+# Push the container image to Artifacts Registry
+- name: gcr.io/cloud-builders/docker
+  args: ['push', 'asia-southeast2-docker.pkg.dev/dev-fahmirullah-abdillah/belajar-cicd/static:latest']
+  id: pushing the image to  registry
+
+# Deploy container image to Cloud Run
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['run', 'deploy', '-', '--image', 'asia-southeast2-docker.pkg.dev/dev-fahmirullah-abdillah/belajar-cicd/static:latest', '--region', 'asia-southeast2', '--platform', 'managed']
+  id: deploy to cloud run
